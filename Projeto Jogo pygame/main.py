@@ -4,7 +4,7 @@ from level import Level
 
 pygame.init()
 Title = "Stick"
-screen_width, screen_height = 1200, 700
+screen_width, screen_height = 1200, 720
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption(Title)
 clock = pygame.time.Clock()
@@ -16,7 +16,7 @@ while True:  # Atualização constante da tela
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-
+    screen.fill('black')
     level.run()
     pygame.display.update()
     clock.tick(60)
