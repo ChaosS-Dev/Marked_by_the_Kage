@@ -1,22 +1,22 @@
 import pygame, sys
-from settings import *
+from configs import *
 from level import Level
 
 pygame.init()
-Title = "Stick"
-screen_width, screen_height = 1200, 720
-screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption(Title)
+Titulo = "Stick"
+largura_display, altura_display = 1200, 720
+display = pygame.display.set_mode((largura_display, altura_display))
+pygame.display.set_caption(Titulo)
 clock = pygame.time.Clock()
-text_font = pygame.font.Font(None, 50)
-level = Level(level_map,screen)
+fonte_texto = pygame.font.Font(None, 50)
+level = Level(mapa_level, display)
 
 while True:  # Atualização constante da tela
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-    screen.fill('black')
+    display.fill((30,30,30))
     level.run()
     pygame.display.update()
     clock.tick(60)

@@ -1,15 +1,15 @@
-level_map = ['                              ',
+mapa_level = ['                              ',
              '                              ',
-             '                              ',
+             '     P                        ',
              '    XX                        ',
              '    XX                        ',
              '                              ',
-             '         XXXX                 ',
+             '            XX                ',
              '                XXXX          ',
-             '  P           XXXXXXX         ',
+             '              XXXXXXX         ',
              'XXXXX  XX  XXXXXXXXXXXXX  XX  ',
              '                              '
-                ]
+              ]
 
-tile_size = 64
-screen_width, screen_height = 1200, len(level_map) * tile_size
+tamanho_tile = 64
+largura_display, altura_display = 1200, len(mapa_level) * tamanho_tile
