@@ -4,7 +4,7 @@ from level import Level
 
 pygame.init()
 Titulo = "Stick"
-largura_display, altura_display = 1200, 720
+largura_display, altura_display = 1980, 1080
 display = pygame.display.set_mode((largura_display, altura_display))
 pygame.display.set_caption(Titulo)
 clock = pygame.time.Clock()
