@@ -66,15 +66,17 @@ class Level:
                     jogador.colisao_esquerda = True
                     jogador.direcao.x = 0
 
+
                 elif jogador.direcao.x > 0 and abs(jogador.rect.right - sprite.rect.left) < tolerancia_colisao:
                     jogador.rect.right = sprite.rect.left
                     jogador.colisao_direita = True
                     jogador.direcao.x = 0
 
+
     def colisao_movimento_vertical(self):
         jogador = self.jogador.sprite
         tolerancia_colisao = 50
-        jogador.apply_gravity()
+        jogador.aplicar_gravidade()
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(jogador.rect):  # Colisão de parede com jogador
                 if jogador.direcao.y > 0 and abs(jogador.rect.bottom - sprite.rect.top) < tolerancia_colisao:
@@ -87,7 +89,11 @@ class Level:
                     jogador.rect.top = sprite.rect.bottom
                     jogador.direcao.y = 0
                     jogador.colisao_topo = True
+        if jogador.colisao_chao and jogador.direcao.y < 0 or jogador.direcao.y > 1: # Registro de colisão com o chão
+            jogador.colisao_chao = False
 
+        if jogador.colisao_topo and jogador.direcao.y > 0:  # Registro de colisão com o teto
+            jogador.colisao_topo = False
     def sem_colisao_vertical(self):
         jogador = self.jogador.sprite
         jogador.colisao_topo = False
@@ -106,7 +112,6 @@ class Level:
         self.scroll_x()
         # Jogador
         self.jogador.update()
-        self.sem_colisao_vertical()
         self.sem_colisao_horizontal()
         self.colisao_movimento_vertical()
         self.colisao_movimento_horizontal()
