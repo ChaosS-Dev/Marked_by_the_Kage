@@ -27,6 +27,7 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
         self.colisao_direita = False
         self.colisao_esquerda = False
         self.agarrando_parede = False
+        self.escalando = False
         self.limite_pulo = 0
         self.olhando_direita = True
 
@@ -75,14 +76,18 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
             self.velocidade_animacao = self.velocidade_animacao_inicial
 
         if not self.colisao_chao and self.direcao.y >= 0:
-            if pygame.key.get_pressed()[pygame.K_SPACE]:
+            if pygame.key.get_pressed()[pygame.K_SPACE] and not pygame.key.get_pressed()[pygame.K_DOWN]:
                 self.status = 'gliding'
             else:
                 self.status = 'falling'
             self.velocidade_animacao = self.velocidade_animacao_inicial
 
-        if self.agarrando_parede:
+        if self.agarrando_parede and self.direcao.y == 0:
             self.status = 'wall_grab'
+            self.velocidade_animacao = self.velocidade_animacao_inicial
+
+        if self.escalando and (self.colisao_direita or self.colisao_esquerda):
+            self.status = 'wall_moving'
             self.velocidade_animacao = self.velocidade_animacao_inicial
 
         if self.colisao_topo:
@@ -96,7 +101,6 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
             if not self.agarrando_parede:
                 self.olhando_direita = True
 
-
         elif keys[pygame.K_LEFT]:
             self.direcao.x = -1
             if not self.agarrando_parede:
@@ -107,8 +111,9 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
             self.gravidade = self.gravidade_inicial
 
         if keys[pygame.K_SPACE]:
-            self.pulo()
-            self.velocidade_pulo = self.velocidade_pulo_inicial
+            if not keys[pygame.K_DOWN]:
+                self.pulo()
+                self.velocidade_pulo = self.velocidade_pulo_inicial
 
         if keys[pygame.K_x]:
             self.correr()
@@ -119,8 +124,9 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
             not self.agarrar_parede()
 
         if keys[pygame.K_DOWN]:
-            self.ground_pound()
-            self.velocidade_pulo = -16
+            if not self.agarrando_parede:
+                self.ground_pound()
+                self.velocidade_pulo = -16
 
         if keys[pygame.K_ESCAPE]:  # Sair do jogo pelo 'Esc'
             pygame.quit()
@@ -131,12 +137,12 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
         self.rect.y += self.direcao.y
 
     def pulo(self):
-
         if self.colisao_chao:
             self.direcao.y = self.velocidade_pulo
         if self.direcao.y > 0:  # Planar
             self.velocidade_pulo = 0
             self.direcao.y = self.velocidade_pulo
+
 
     def correr(self):
 
@@ -149,13 +155,14 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
     def agarrar_parede(self):
         keys = pygame.key.get_pressed()
         if not self.direcao.y < 0:
-            if (self.colisao_direita and keys[pygame.K_z]) or (self.colisao_esquerda and keys[pygame.K_z]):
+            if keys[pygame.K_z] and (self.colisao_direita or self.colisao_esquerda):
                 self.agarrando_parede = True
 
             if not keys[pygame.K_z]:
                 self.agarrando_parede = False
+                self.escalando = False
 
-            if self.agarrando_parede:
+            if self.agarrando_parede and not keys[pygame.K_DOWN] and not keys[pygame.K_UP]:
                 self.gravidade = 0
                 self.direcao.y = 0
                 self.direcao.x = 0
@@ -163,6 +170,14 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
             else:
                 self.gravidade = self.gravidade_inicial
 
+            if self.agarrando_parede:
+                if keys[pygame.K_UP]:
+                    self.direcao.y -= 5
+                    self.escalando = True
+                    self.agarrando_parede = False
+
+                if not keys[pygame.K_UP]:
+                    self.escalando = False
     def ground_pound(self):
         if not self.colisao_chao:
             self.velocidade_pulo = 32
