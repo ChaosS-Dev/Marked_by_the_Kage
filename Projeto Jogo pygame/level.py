@@ -1,21 +1,36 @@
 import pygame
-from tiles import Tile
-from configs import tamanho_tile, largura_display
+from tiles import Tile, TileEstatico
+from configs import tamanho_tile, largura_display, altura_display
+from dicionários import *
 from jogador import Jogador
-
+from funcoes_suporte import importar_arquivos_csv, importar_graficos
 
 class Level:
     def __init__(self, level_data, superficie):
         self.display_surface = superficie
-        self.setup_level(level_data)
+        self.imagem = pygame.image.load('./levels/level_1/level_1.png')
+        # layout_terreno = importar_arquivos_csv(level_data['terreno'])
 
-        self.deslocamento_level_x = 0  # Movimento do level
 
-    def setup_level(self, layout):
+
+
+        self.sprites_terreno = self.setup_level(level_data,superficie)
+
+
+        self.deslocamento_level_x = 0  # Movimento horizontal do level
+        self.deslocamento_level_y = 0  # Movimento vertical do level
+
+    def setup_level(self, layout,tipo):
         self.tiles = pygame.sprite.Group()
         self.jogador = pygame.sprite.GroupSingle()
         for index_linha, linha in enumerate(layout):
             for index_coluna, celula in enumerate(linha):
+                if tipo == 'terreno':
+                    # lista_tiles_terreno = importar_graficos('./levels/tile_sets/Texture/TX Tileset Ground - Copia.png')
+                    # superficie_tile = lista_tiles_terreno[int(celula)]
+                    tile = Tile((x, y),tamanho_tile)
+                    self.tiles.add(tile)
+
                 if celula == 'X':
                     x = index_coluna * tamanho_tile
                     y = index_linha * tamanho_tile
@@ -24,35 +39,43 @@ class Level:
                 if celula == 'P':
                     x = index_coluna * tamanho_tile
                     y = index_linha * tamanho_tile
-                    sprite_jogador = Jogador((x, y))  # Posição (x,y); Tamanho (tile_size de settings, padrão = 64)
+                    sprite_jogador = Jogador((x,y))
                     self.jogador.add(sprite_jogador)
 
+        return self.tiles
     def scroll_x(self):
         jogador = self.jogador.sprite
         jogador_x = jogador.rect.centerx
         direcao_x = jogador.direcao.x
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_x]:
-            if jogador_x < largura_display / 4 and direcao_x < 0:
-                self.deslocamento_level_x = jogador.velocidade_level
-                jogador.velocidade = 0
-            elif jogador_x > largura_display - (largura_display / 4) and direcao_x > 0:
-                self.deslocamento_level_x = -jogador.velocidade_level
-                jogador.velocidade = 0
-            else:
-                self.deslocamento_level_x = 0
+        if jogador_x < largura_display / 4 and direcao_x < 0:
+            self.deslocamento_level_x = jogador.velocidade_inicial
+            jogador.velocidade = 0
+        elif jogador_x > largura_display - (largura_display / 4) and direcao_x > 0:
+            self.deslocamento_level_x = -jogador.velocidade_inicial
+            jogador.velocidade = 0
+        else:
+            self.deslocamento_level_x = 0
+            jogador.velocidade = jogador.velocidade_inicial
+    def scroll_y(self):
+        jogador = self.jogador.sprite
+        jogador_y = jogador.rect.centery
+        direcao_y = jogador.direcao.y
+        keys = pygame.key.get_pressed()
 
-        elif not keys[pygame.K_x]:
-            if jogador_x < largura_display / 4 and direcao_x < 0:
-                self.deslocamento_level_x = jogador.velocidade_inicial
-                jogador.velocidade = 0
-            elif jogador_x > largura_display - (largura_display / 4) and direcao_x > 0:
-                self.deslocamento_level_x = -jogador.velocidade_inicial
-                jogador.velocidade = 0
-            else:
-                self.deslocamento_level_x = 0
-                jogador.velocidade = jogador.velocidade_inicial
+
+        if jogador_y < altura_display / 6 and not direcao_y < 0:
+            self.deslocamento_level_y = jogador.direcao.y
+
+
+        elif jogador_y > altura_display - (altura_display / 6):
+            self.deslocamento_level_y = -6
+            jogador.direcao.y = 0
+        else:
+            self.deslocamento_level_y = 0
+
+
 
     def colisao_movimento_horizontal(self):  # Colisões laterais com os tiles
         jogador = self.jogador.sprite
@@ -104,15 +127,28 @@ class Level:
         jogador.colisao_direita = False
         jogador.colisao_esquerda = False
 
+
     def run(self):
 
         # Tiles do Level
-        self.tiles.update(self.deslocamento_level_x)
-        self.tiles.draw(self.display_surface)
+
+        self.sprites_terreno.draw(self.display_surface)
+        self.tiles.update(self.deslocamento_level_x,self.deslocamento_level_y)
+
+
+
+        # self.tiles.draw(self.display_surface)
+
         self.scroll_x()
+        self.scroll_y()
+
         # Jogador
         self.jogador.update()
         self.sem_colisao_horizontal()
         self.colisao_movimento_vertical()
         self.colisao_movimento_horizontal()
         self.jogador.draw(self.display_surface)
+
+
+
+

@@ -1,6 +1,7 @@
 import pygame, sys
 from configs import largura_display
 from funcoes_suporte import importar_arquivo
+from dicionários import *
 
 class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
     def __init__(self, posicao):
@@ -33,8 +34,7 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
 
     def importar_sprites_personagens(self):
         diretorio = './sprites/player/'
-        self.grafico_personagem = {'idle':[], 'running':[], 'run_atk':[], 'jumping':[], 'falling':[], 'duck_idle':[],
-                                       'duck_atk':[], 'damage':[], 'gliding':[], 'wall_grab':[], 'wall_moving':[]} # Dicionário
+        self.grafico_personagem = dicionario_jogador # Dicionário
 
         for graficos in self.grafico_personagem.keys():
             self.diretorio_completo = diretorio + graficos
@@ -96,37 +96,36 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
     def get_input(self):  # Comandos input personagem
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_RIGHT]:
-            self.direcao.x = 1
-            if not self.agarrando_parede:
-                self.olhando_direita = True
+        if not keys[pygame.K_DOWN]:
+            if keys[pygame.K_RIGHT]:
+                self.direcao.x = 1
+                if not self.agarrando_parede:
+                    self.olhando_direita = True
 
-        elif keys[pygame.K_LEFT]:
-            self.direcao.x = -1
-            if not self.agarrando_parede:
-                self.olhando_direita = False
+            elif keys[pygame.K_LEFT]:
+                self.direcao.x = -1
+                if not self.agarrando_parede:
+                    self.olhando_direita = False
 
-        elif not keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]:
-            self.direcao.x = 0
-            self.gravidade = self.gravidade_inicial
+            elif not keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]:
+                self.direcao.x = 0
+                self.gravidade = self.gravidade_inicial
 
         if keys[pygame.K_SPACE]:
             if not keys[pygame.K_DOWN]:
                 self.pulo()
+                self.agarrar_parede()
                 self.velocidade_pulo = self.velocidade_pulo_inicial
 
-        if keys[pygame.K_x]:
-            self.correr()
-        if keys[pygame.K_z]:
-            self.agarrar_parede()
 
-        if not keys[pygame.K_z]:
+        if not keys[pygame.K_SPACE]:
             not self.agarrar_parede()
 
         if keys[pygame.K_DOWN]:
             if not self.agarrando_parede:
                 self.ground_pound()
                 self.velocidade_pulo = -16
+                self.direcao.x = 0
 
         if keys[pygame.K_ESCAPE]:  # Sair do jogo pelo 'Esc'
             pygame.quit()
@@ -144,21 +143,13 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
             self.direcao.y = self.velocidade_pulo
 
 
-    def correr(self):
-
-        if (self.rect.centerx < largura_display / 4 and self.direcao.x < 0) or (
-                    self.rect.centerx > largura_display - (largura_display / 4) and self.direcao.x > 0):
-            self.velocidade = 0
-        else:
-            self.velocidade = self.velocidade_corrida
-
     def agarrar_parede(self):
         keys = pygame.key.get_pressed()
         if not self.direcao.y < 0:
-            if keys[pygame.K_z] and (self.colisao_direita or self.colisao_esquerda):
+            if keys[pygame.K_SPACE] and (self.colisao_direita or self.colisao_esquerda):
                 self.agarrando_parede = True
 
-            if not keys[pygame.K_z]:
+            if not keys[pygame.K_SPACE]:
                 self.agarrando_parede = False
                 self.escalando = False
 

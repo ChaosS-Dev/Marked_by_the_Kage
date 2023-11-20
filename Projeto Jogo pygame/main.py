@@ -1,11 +1,11 @@
 import pygame, sys
 from configs import *
 from level import Level
+from dicionários import *
 
 pygame.init()
-Titulo = "Stick"
-largura_display, altura_display = 1280, 720
-display = pygame.display.set_mode((largura_display, altura_display))
+Titulo = "Ninja"
+display = pygame.display.set_mode((largura_display, altura_display)) # Tamanho da janela em "configs.py"
 pygame.display.set_caption(Titulo)
 clock = pygame.time.Clock()
 fonte_texto = pygame.font.Font(None, 50)
