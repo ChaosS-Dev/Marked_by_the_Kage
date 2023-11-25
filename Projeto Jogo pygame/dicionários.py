@@ -17,26 +17,26 @@ level_teste =['                              ',
              '                               '
               ]
 
-level =[
-'                                                                                                                            XXXX                           ',
-'                                                                                                                            XXXX                           ',
-'                                                               XXXXXXXXXXXXXXXXXXXXXXX                                      XXXX    XXXX                   ',
-'                                                               XXXXXXXXXXXXXXXXXXXXXXX                                              XXXXX                  ',
-'                                                                                   XXX                                              XXXXXX                 ',
-'                                                                                   XXX               XXXXXXXXXXXXXXXXXXXX           XXXXXXX                ',
-'                                                             XXXXXXXXXXXXXXXXXX    XXX               XXXXXXXXXXXXXXXXXXXX                                  ',
-'                                                             XXXXXXXXXXXXXXXXXX    XXX                                                                     ',
-'                                                             XXXXXXXXXXXXXXXXXX    XXX                                                                     ',
-'                                                                                   XXX                                                                     ',
-'                                                                                   XXX                                                                     ',
-'                                                                    XXXXXXXXXXXXXXXXXX                                                                     ',
-'                                                                    XXXXXXXXXXXXXXXXXX                                                                     ',
-'                                                               X    XXXX                                                                                   ',
-'                                                               X                                                                                           ',
-'                                                               X                                                         G                                 ',
-' P                                    XX                XXX                                           XXXXXXXXXXXXXXXXXXXXX                                ',
-'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    XXXX    XXXXXXX    XXX                                           XXXXXXXXXXXXXXXXXXXXX                                ',
-'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    XXXX    XXXXXXX    XXX                                           XXXXXXXXXXXXXXXXXXXXX                                '
+level_teste01 =[
+'                                                                                                                            ZXXz                           ',
+'                                                                                                                            WYYw                           ',
+'                                                               ZXXXXXXXXXXXXXXXXXXXXXz                                      IJJi    ZXXz                   ',
+'                                                               IJJJJJJJJJJJJJJJJJJJYYw                                              WYYYz                  ',
+'                                                                                   WYw                                              WYYYYz                 ',
+'                                                                                   WYw               ZXXXXXXXXXXXXXXXXXXz           IJJJJJz                ',
+'                                                             ZXXXXXXXXXXXXXXXXz    WYw               IJJJJJJJJJJJJJJJJJJi                                  ',
+'                                                             WYYYYYYYYYYYYYYYYw    WYw                                                                     ',
+'                                                             IJJJJJJJJJJJJJJJJi    WYw                                                                     ',
+'                                                                                   WYw                                                                     ',
+'                                                                                   WYw                                                                     ',
+'                                                                    ZXXXXXXXXXXXXXXYYw                                                                     ',
+'                                                                    WYYYJJJJJJJJJJJJJi                                                                     ',
+'                                                               K    IJJi                                                                                   ',
+'                                                               k                                                                                           ',
+'                                                                                                                        G                                 ',
+' P                                    Zz                ZXz                                           ZXXXXXXXXXXXXXXXXXXXz                                ',
+'ZXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXz    ZYYz    ZXXXXXz    WYw                                           WYYYYYYYYYYYYYYYYYYYw                                ',
+'IJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJi    IJJi    IJJJJJi    IJi                                           IJJJJJJJJJJJJJJJJJJJi                                '
     ]
 
 
@@ -51,4 +51,4 @@ level =[
 #             'decoracao02': './levels/level_1/level_1._decoracao02.csv'
 # }
 
-mapa_level = level
+mapa_level = level_teste01
