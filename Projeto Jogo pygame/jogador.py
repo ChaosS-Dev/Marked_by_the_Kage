@@ -1,7 +1,10 @@
 import pygame, sys
 from configs import largura_display
+from tiles import Tile
 from funcoes_suporte import importar_arquivo
+from configs import largura_display, altura_display
 from dicionários import *
+
 
 class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
     def __init__(self, posicao):
@@ -31,6 +34,17 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
         self.escalando = False
         self.limite_pulo = 0
         self.olhando_direita = True
+
+
+        self.vida = 3
+
+        self.perdeu_vida = False       # Garante que seja subtraído 1 de hp por colisão no inimigo
+
+        self.moedas = 0
+        self.colisao_inimigo = False
+        self.colidiu_inimigo = False    # Garante que ocorre uma colisão única
+
+
 
     def importar_sprites_personagens(self):
         diretorio = './sprites/player/'
@@ -93,41 +107,56 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
         if self.colisao_topo:
             self.rect = self.image.get_rect(midtop=self.rect.midtop)
 
+        if self.colisao_inimigo:
+            self.status = 'damage'
+            if self.perdeu_vida == False:
+                self.vida -= 1
+                self.perdeu_vida = True
+                # print('hp:',self.vida)
+
+
+
+
     def get_input(self):  # Comandos input personagem
         keys = pygame.key.get_pressed()
+        if not self.colisao_inimigo:
+            self.perdeu_vida = False
 
-        if not keys[pygame.K_DOWN]:
-            if keys[pygame.K_RIGHT]:
-                self.direcao.x = 1
-                if not self.agarrando_parede:
-                    self.olhando_direita = True
-
-            elif keys[pygame.K_LEFT]:
-                self.direcao.x = -1
-                if not self.agarrando_parede:
-                    self.olhando_direita = False
-
-            elif not keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]:
-                self.direcao.x = 0
-                self.gravidade = self.gravidade_inicial
-
-        if keys[pygame.K_SPACE]:
             if not keys[pygame.K_DOWN]:
-                self.pulo()
-                self.agarrar_parede()
-                self.velocidade_pulo = self.velocidade_pulo_inicial
-                
+                if keys[pygame.K_RIGHT]:
+                    self.direcao.x = 1
+                    if not self.agarrando_parede:
+                        self.olhando_direita = True
+
+                elif keys[pygame.K_LEFT]:
+                    self.direcao.x = -1
+                    if not self.agarrando_parede:
+                        self.olhando_direita = False
+
+                elif not keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]:
+                    self.direcao.x = 0
+                    self.gravidade = self.gravidade_inicial
+
+            if keys[pygame.K_SPACE]:
+                if not keys[pygame.K_DOWN]:
+                    self.pulo()
+                    self.agarrar_parede()
+                    self.velocidade_pulo = self.velocidade_pulo_inicial
+
+
+
+            if keys[pygame.K_DOWN]:
+                if not self.agarrando_parede:
+                    self.ground_pound()
+                    self.velocidade_pulo = -16
+                    self.direcao.x = 0
 
         if not keys[pygame.K_SPACE]:
             not self.agarrar_parede()
 
-        if keys[pygame.K_DOWN]:
-            if not self.agarrando_parede:
-                self.ground_pound()
-                self.velocidade_pulo = -16
-                self.direcao.x = 0
 
-        if keys[pygame.K_ESCAPE]:  # Sair do jogo pelo 'Esc'
+
+        if self.rect.y > 1.1125*altura_display or (self.vida <= 0 and not self.status == 'damage'):  # Sair do jogo pelo 'Esc'
             pygame.quit()
             sys.exit()
 
@@ -169,11 +198,15 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
 
                 if not keys[pygame.K_UP]:
                     self.escalando = False
+
     def ground_pound(self):
         if not self.colisao_chao:
             self.velocidade_pulo = 32
             self.direcao.y = self.velocidade_pulo
 
     def update(self):
+
         self.get_input()
         self.animacao(self.status)
+
+        # print(self.rect.x,self.rect.y) # Origem = 50, 568, Fora dos limites = x , 650

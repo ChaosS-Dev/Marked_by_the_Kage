@@ -12,13 +12,13 @@ def importar_arquivo(caminho):
 
         return lista_superficies
 
-def importar_arquivos_csv(caminho):
-    with open(caminho) as mapa:
-        mapa_terreno = []
-        level = reader(mapa,delimiter = ',')
-        for linha in level:
-            mapa_terreno.append(list(linha))
-        return mapa_terreno
+# def importar_arquivos_csv(caminho):
+#     with open(caminho) as mapa:
+#         mapa_terreno = []
+#         level = reader(mapa,delimiter = ',')
+#         for linha in level:
+#             mapa_terreno.append(list(linha))
+#         return mapa_terreno
 def importar_graficos(caminho):
     superficie = pygame.image.load(caminho).convert_alpha()
     # superficie = pygame.transform.scale(superficie, (1,1))
