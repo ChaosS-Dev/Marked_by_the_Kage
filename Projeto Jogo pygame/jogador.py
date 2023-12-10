@@ -37,8 +37,8 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
 
 
         self.vida = 3
-
         self.perdeu_vida = False       # Garante que seja subtraído 1 de hp por colisão no inimigo
+        self.game_over = False
 
         self.moedas = 0
         self.colisao_inimigo = False
@@ -157,8 +157,8 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
 
 
         if self.rect.y > 1.1125*altura_display or (self.vida <= 0 and not self.status == 'damage'):  # Sair do jogo pelo 'Esc'
-            pygame.quit()
-            sys.exit()
+            self.game_over = True
+
 
     def aplicar_gravidade(self):  # Gravidade
         self.direcao.y += self.gravidade

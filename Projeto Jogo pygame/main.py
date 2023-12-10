@@ -1,7 +1,9 @@
 import pygame, sys
+import math
 from configs import *
 from level import Level
 from dicionários import *
+
 
 
 # Bases para o código:
@@ -23,6 +25,8 @@ class Game:
         self.opcoes = 1
         self.creditos = False
         self.menu_principal = True
+        self.game_over = False
+
 
         self.cont_opcoes = False
         self.cont_enter = False
@@ -65,6 +69,12 @@ class Game:
 
     def hud(self):
         for jogador in self.level.jogador:
+
+            if jogador.game_over:
+                self.game_over = True
+
+
+
             if jogador.vida < 3:
                 self.hp_3 = self.hp_2
 
@@ -76,6 +86,8 @@ class Game:
 
             self.fonte_hud = pygame.font.Font('./fonte/lastninja.ttf', 16)
             self.cont_moedas = self.fonte_hud.render(f'x{jogador.moedas}', True, 'white')
+
+
 
     def run(self):
 
@@ -102,9 +114,6 @@ class Game:
                     if pygame.key.get_pressed()[pygame.K_ESCAPE]:
                         self.creditos = False
                         self.menu_principal = True
-
-
-
 
                 else:
 
@@ -282,7 +291,7 @@ class Game:
             elif not pygame.key.get_pressed()[pygame.K_RETURN]:
                 self.cont_enter = False
 
-            if pygame.key.get_pressed()[pygame.K_ESCAPE] and not self.menu:
+            if pygame.key.get_pressed()[pygame.K_ESCAPE] and not self.menu and not self.game_over:
                 self.menu = True
 
                 Pause = self.fonte.render('Pause', True, 'white')
@@ -309,6 +318,23 @@ class Game:
                 self.display.blit(self.moedas, (32, 32 + 64))
 
                 self.display.blit(self.cont_moedas, (32 + 36, 32 + 72))
+
+
+                if self.game_over:
+                    game_over = pygame.image.load('./Graphics/menu/game_over.png')
+                    self.display.blit(game_over, (0, 0))
+
+                    Recomecar = self.fonte2.render('Pressione R para recomecar', True, 'white')
+                    largura_fonte = Recomecar.get_width()
+                    altura_fonte = Recomecar.get_height()
+
+
+                    self.display.blit(Recomecar, (largura_display // 2 - largura_fonte // 2,altura_display // 2 + altura_display // 3 - 60 + altura_fonte // 2))
+
+                    
+
+
+
 
             # RESET #
             if pygame.key.get_pressed()[pygame.K_r]:
