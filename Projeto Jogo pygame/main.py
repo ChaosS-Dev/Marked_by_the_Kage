@@ -1,5 +1,4 @@
 import pygame, sys
-import math
 from configs import *
 from level import Level
 from dicionários import *
@@ -331,7 +330,7 @@ class Game:
 
                     self.display.blit(Recomecar, (largura_display // 2 - largura_fonte // 2,altura_display // 2 + altura_display // 3 - 60 + altura_fonte // 2))
 
-                    
+
 
 
 
