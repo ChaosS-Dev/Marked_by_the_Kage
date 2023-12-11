@@ -168,13 +168,13 @@ class Level:
             if jogador.status != 'gliding':
                 self.deslocamento_level_y = 6
             if jogador.status == 'gliding':
-                self.deslocamento_level_y = 3
+                self.deslocamento_level_y = 2
 
         elif jogador_y > altura_display - (altura_display / 5):
             if jogador.status != 'gliding':
                 self.deslocamento_level_y = -6
             if jogador.status == 'gliding':
-                self.deslocamento_level_y = -3
+                self.deslocamento_level_y = -2
             jogador.direcao.y = 0
         else:
             self.deslocamento_level_y = 0

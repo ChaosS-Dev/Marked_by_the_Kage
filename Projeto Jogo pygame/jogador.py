@@ -148,7 +148,7 @@ class Jogador(pygame.sprite.Sprite):  # Parametros do Jogador:
             if keys[pygame.K_DOWN]:
                 if not self.agarrando_parede:
                     self.ground_pound()
-                    self.velocidade_pulo = -16
+                    self.velocidade_pulo = self.velocidade_pulo_inicial
                     self.direcao.x = 0
 
         if not keys[pygame.K_SPACE]:

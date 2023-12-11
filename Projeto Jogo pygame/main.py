@@ -51,6 +51,7 @@ class Game:
         self.level.h_movement = [False, False]
 
         # HUD jogador
+
         self.hp_3 = pygame.image.load("./sprites/HUD/hp/3 vidas.png").convert_alpha()
         self.hp_3 = pygame.transform.scale(self.hp_3, (32 * 3 * 1.25 + 20 * 1.25, 32 * 1.25))
 
@@ -82,6 +83,9 @@ class Game:
 
                     if jogador.vida < 1:
                         self.hp_3 = pygame.transform.scale(self.hp_1, (0, 0))
+
+
+
 
             self.fonte_hud = pygame.font.Font('./fonte/lastninja.ttf', 16)
             self.cont_moedas = self.fonte_hud.render(f'x{jogador.moedas}', True, 'white')
